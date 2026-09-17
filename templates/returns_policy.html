@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Returns policy — CampusKit{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:760px;">
+  <h2>Returns policy</h2>
+  <p>We want your calculator, drafter or instrument box to work the moment it arrives. If it doesn't, here's how returns work.</p>
+
+  <div class="form-panel wide" style="margin:0 0 24px;">
+    <h3>3-day return window</h3>
+    <p>You can request a return for any item within <strong>3 days</strong> of it being marked delivered. After that window closes, we're unable to accept returns.</p>
+  </div>
+
+  <div class="form-panel wide" style="margin:0 0 24px;">
+    <h3>What qualifies</h3>
+    <p>Items that don't power on, have a manufacturing defect, or arrived visibly different from the listing. The item should be unused and in its original packaging where possible.</p>
+  </div>
+
+  <div class="form-panel wide" style="margin:0 0 24px;">
+    <h3>How to request a return</h3>
+    <p>Go to <a href="{{ url_for('shop.order_history') }}">My Orders</a>, open the order, and click "Request return" on the item within the 3-day window. Include a short reason — our admin team reviews requests and gets back to you.</p>
+  </div>
+
+  <div class="form-panel wide" style="margin:0;">
+    <h3>Still stuck?</h3>
+    <p>Reach out on the <a href="{{ url_for('main.contact') }}">contact page</a> and we'll sort it out.</p>
+  </div>
+</div>
+{% endblock %}

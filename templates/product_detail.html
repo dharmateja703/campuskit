@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — CampusKit{% endblock %}
+{% block content %}
+<div class="container section">
+
+  <div class="product-detail">
+    <div class="product-gallery">
+      <div class="main-image" id="main-image">
+        {% if product.images %}
+          <img src="{{ url_for('static', filename='uploads/products/' ~ product.images[0].filename) }}" alt="{{ product.name }}">
+        {% else %}
+          <span class="no-image">No image available</span>
+        {% endif %}
+      </div>
+      {% if product.images|length > 1 %}
+      <div class="thumb-row">
+        {% for img in product.images %}
+          <img src="{{ url_for('static', filename='uploads/products/' ~ img.filename) }}"
+               onclick="document.querySelector('#main-image img').src=this.src" alt="thumbnail">
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="product-info">
+      <span class="tag">{{ product.category }}</span>
+      <h1>{{ product.name }}</h1>
+      {% if product.brand %}<p class="muted">Brand: {{ product.brand }}</p>{% endif %}
+      <span class="price">₹{{ '%.2f'|format(product.price) }}</span>
+
+      {% if product.in_stock %}
+        <p class="stock-ok">In stock — {{ product.stock }} available</p>
+        <form action="{{ url_for('shop.add_to_cart', product_id=product.id) }}" method="post" class="field-row" style="align-items:flex-end;">
+          <div class="field" style="max-width:100px;">
+            <label>Qty</label>
+            <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
+          </div>
+          <button type="submit" class="btn btn-amber">Add to cart</button>
+        </form>
+      {% else %}
+        <p class="stock-out">Currently out of stock</p>
+        <button class="btn" disabled>Add to cart</button>
+      {% endif %}
+
+      <p style="margin-top:20px;">{{ product.description or "No description provided yet." }}</p>
+
+      <div class="spec-list">
+        <div><span>Category</span><span>{{ product.category }}</span></div>
+        <div><span>Listed by</span><span>{{ product.added_by.name }}{% if product.added_by.college %} · {{ product.added_by.college }}{% endif %}</span></div>
+        <div><span>Returns</span><span><a href="{{ url_for('main.returns_policy') }}">3-day window</a></span></div>
+      </div>
+    </div>
+  </div>
+
+  {% if related %}
+  <div class="section-head" style="margin-top:50px;">
+    <h2>More in {{ product.category }}</h2>
+  </div>
+  <div class="grid">
+    {% for p in related %}
+    <div class="spec-card">
+      <a href="{{ url_for('main.product_detail', product_id=p.id) }}" class="thumb">
+        {% if p.primary_image %}<img src="{{ url_for('static', filename='uploads/products/' ~ p.primary_image) }}" alt="{{ p.name }}">{% else %}<span class="no-image">No image</span>{% endif %}
+      </a>
+      <h3><a href="{{ url_for('main.product_detail', product_id=p.id) }}">{{ p.name }}</a></h3>
+      <div class="spec-row"><span class="price">₹{{ '%.2f'|format(p.price) }}</span></div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

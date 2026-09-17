@@ -1,0 +1,35 @@
+{% extends "admin/_layout.html" %}
+{% block title %}Returns — CampusKit{% endblock %}
+{% block admin_content %}
+<h2>Return requests</h2>
+{% if requests %}
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Item</th><th>Order</th><th>Reason</th><th>Status</th><th>Requested</th><th></th></tr></thead>
+    <tbody>
+    {% for r in requests %}
+      <tr>
+        <td>{{ r.order_item.product_name }}</td>
+        <td><a href="{{ url_for('shop.order_detail', order_id=r.order_item.order_id) }}">#{{ r.order_item.order_id }}</a></td>
+        <td>{{ r.reason }}</td>
+        <td><span class="pill pill-{{ r.status }}">{{ r.status }}</span></td>
+        <td>{{ r.created_at.strftime('%d %b %Y') }}</td>
+        <td style="display:flex; gap:8px;">
+          {% if r.status == 'requested' %}
+          <form method="post" action="{{ url_for('admin.decide_return', request_id=r.id, decision='approved') }}">
+            <button type="submit" class="btn btn-amber btn-sm">Approve</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.decide_return', request_id=r.id, decision='rejected') }}">
+            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="muted">No return requests yet.</p>
+{% endif %}
+{% endblock %}

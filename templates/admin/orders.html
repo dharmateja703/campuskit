@@ -1,0 +1,33 @@
+{% extends "admin/_layout.html" %}
+{% block title %}Orders — CampusKit{% endblock %}
+{% block admin_content %}
+<h2>Orders</h2>
+{% if orders %}
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr></thead>
+    <tbody>
+    {% for o in orders %}
+      <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ o.customer.name }}</td>
+        <td>{{ o.created_at.strftime('%d %b %Y') }}</td>
+        <td><span class="pill pill-{{ o.status }}">{{ o.status }}</span></td>
+        <td>₹{{ '%.2f'|format(o.total_amount) }}</td>
+        <td style="display:flex; gap:8px;">
+          <a href="{{ url_for('shop.order_detail', order_id=o.id) }}" class="btn btn-outline btn-sm">View</a>
+          {% if o.status == 'placed' %}
+          <form method="post" action="{{ url_for('admin.mark_delivered', order_id=o.id) }}">
+            <button type="submit" class="btn btn-amber btn-sm">Mark delivered</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="muted">No orders placed yet.</p>
+{% endif %}
+{% endblock %}

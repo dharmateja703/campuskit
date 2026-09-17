@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} — CampusKit{% endblock %}
+{% block content %}
+<div class="container section empty-state">
+  <h2>{{ code }}</h2>
+  <p>{{ message }}</p>
+  <a href="{{ url_for('main.home') }}" class="btn btn-amber">Back to shop</a>
+</div>
+{% endblock %}

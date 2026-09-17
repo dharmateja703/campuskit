@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container section">
+  <div class="admin-shell">
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if request.endpoint == 'admin.dashboard' }}">Dashboard</a>
+      <a href="{{ url_for('admin.products') }}" class="{{ 'active' if request.endpoint in ['admin.products','admin.add_product','admin.edit_product'] }}">Products</a>
+      <a href="{{ url_for('admin.orders') }}" class="{{ 'active' if request.endpoint == 'admin.orders' }}">Orders</a>
+      <a href="{{ url_for('admin.returns') }}" class="{{ 'active' if request.endpoint == 'admin.returns' }}">Returns</a>
+      <a href="{{ url_for('admin.messages') }}" class="{{ 'active' if request.endpoint == 'admin.messages' }}">Messages</a>
+      {% if current_user.is_owner %}
+      <a href="{{ url_for('admin.manage_admins') }}" class="{{ 'active' if request.endpoint == 'admin.manage_admins' }}">Admin team</a>
+      {% endif %}
+    </nav>
+    <div class="admin-main">
+      {% block admin_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

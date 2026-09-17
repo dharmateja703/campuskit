@@ -1,0 +1,24 @@
+{% extends "admin/_layout.html" %}
+{% block title %}Messages — CampusKit{% endblock %}
+{% block admin_content %}
+<h2>Contact messages</h2>
+{% if messages %}
+  {% for m in messages %}
+  <div class="form-panel wide" style="margin:0 0 14px;">
+    <div class="section-head" style="margin-bottom:8px;">
+      <strong>{{ m.subject }}</strong>
+      {% if not m.is_read %}<span class="pill pill-requested">new</span>{% endif %}
+    </div>
+    <p class="muted" style="margin-bottom:8px;">{{ m.name }} &lt;{{ m.email }}&gt; · {{ m.created_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+    <p>{{ m.message }}</p>
+    {% if not m.is_read %}
+    <form method="post" action="{{ url_for('admin.mark_message_read', message_id=m.id) }}">
+      <button type="submit" class="btn btn-outline btn-sm">Mark as read</button>
+    </form>
+    {% endif %}
+  </div>
+  {% endfor %}
+{% else %}
+<p class="muted">No messages yet.</p>
+{% endif %}
+{% endblock %}

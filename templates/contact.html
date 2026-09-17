@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Contact us — CampusKit{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="two-col">
+    <div>
+      <h2>Contact us</h2>
+      <p>Question about an order, a product, or want to sell CampusKit gear at your college? Send us a message and we'll get back within 2 working days.</p>
+      <div class="spec-list">
+        <div><span>Email</span><span>support@campuskit.example</span></div>
+        <div><span>Phone</span><span>+91 98765 43210</span></div>
+        <div><span>Hours</span><span>Mon–Sat, 10am–6pm</span></div>
+        <div><span>Returns</span><span><a href="{{ url_for('main.returns_policy') }}">3-day return policy</a></span></div>
+      </div>
+    </div>
+    <div class="form-panel wide" style="margin:0;">
+      <form method="post">
+        <div class="field-row">
+          <div class="field"><label>Your name</label><input type="text" name="name" required></div>
+          <div class="field"><label>Email</label><input type="email" name="email" required></div>
+        </div>
+        <div class="field">
+          <label>Subject</label>
+          <input type="text" name="subject" placeholder="e.g. Order #12 — return question">
+        </div>
+        <div class="field">
+          <label>Message</label>
+          <textarea name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-amber btn-block">Send message</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

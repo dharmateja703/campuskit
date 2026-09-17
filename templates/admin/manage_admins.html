@@ -1,0 +1,74 @@
+{% extends "admin/_layout.html" %}
+{% block title %}Admin team — CampusKit{% endblock %}
+{% block admin_content %}
+<h2>Admin team</h2>
+<p class="muted">As the store owner, only you can grant other people admin access — for example, a contact at another college who'll list their own products.</p>
+
+<div class="form-panel wide" style="margin:0 0 30px;">
+  <h3>Invite an admin</h3>
+  <form method="post">
+    <div class="field-row">
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" name="email" required placeholder="admin@othercollege.edu">
+      </div>
+      <div class="field">
+        <label>Note (optional)</label>
+        <input type="text" name="note" placeholder="e.g. Handles listings for XYZ College">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-amber">Send invite</button>
+  </form>
+</div>
+
+<h3>Current admins</h3>
+<div class="table-wrap" style="margin-bottom:30px;">
+  <table>
+    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>College</th><th></th></tr></thead>
+    <tbody>
+    {% for u in admins %}
+      <tr>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td>{{ u.college or '—' }}</td>
+        <td>
+          {% if u.role != 'owner' %}
+          <form method="post" action="{{ url_for('admin.remove_admin', user_id=u.id) }}" onsubmit="return confirm('Remove admin access for this user?');">
+            <button type="submit" class="btn btn-danger btn-sm">Remove access</button>
+          </form>
+          {% else %}
+          <span class="muted">Store owner</span>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h3>Invitations</h3>
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Email</th><th>Status</th><th>Sent</th><th></th></tr></thead>
+    <tbody>
+    {% for inv in invites %}
+      <tr>
+        <td>{{ inv.email }}</td>
+        <td><span class="pill pill-{{ 'requested' if inv.status == 'pending' else ('delivered' if inv.status == 'accepted' else 'cancelled') }}">{{ inv.status }}</span></td>
+        <td>{{ inv.created_at.strftime('%d %b %Y') }}</td>
+        <td>
+          {% if inv.status == 'pending' %}
+          <form method="post" action="{{ url_for('admin.revoke_invite', invite_id=inv.id) }}">
+            <button type="submit" class="btn btn-outline btn-sm">Revoke</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="4" class="muted">No invitations sent yet.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

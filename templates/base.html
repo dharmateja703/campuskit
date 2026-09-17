@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}CampusKit — Engineering & Exam Essentials{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <span>Free campus pickup on all orders &middot; Returns accepted within 3 days</span>
+    <span><a href="{{ url_for('main.contact') }}">Need help? Contact us</a></span>
+  </div>
+</div>
+
+<header class="navbar">
+  <div class="container">
+    <a class="brand" href="{{ url_for('main.home') }}"><span class="brand-mark">&#9633;</span> CampusKit</a>
+
+    <form class="search-form" action="{{ url_for('main.home') }}" method="get">
+      <input type="text" name="q" placeholder="Search calculators, drafters, gadgets..." value="{{ request.args.get('q', '') }}">
+      <select name="category">
+        <option value="">All categories</option>
+        {% for cat in (categories or []) %}
+          <option value="{{ cat }}" {% if request.args.get('category') == cat %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Search</button>
+    </form>
+
+    <nav class="nav-links">
+      <a class="cart-link" href="{{ url_for('shop.view_cart') }}">Cart{% if cart_count %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}</a>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('shop.order_history') }}">My Orders</a>
+        {% if current_user.is_admin %}<a href="{{ url_for('admin.dashboard') }}">Admin Panel</a>{% endif %}
+        <span class="badge-role">{{ current_user.role }}</span>
+        <a href="{{ url_for('auth.logout') }}">Log out</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Log in</a>
+        <a class="btn btn-sm btn-amber" href="{{ url_for('auth.register') }}">Sign up</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+
+{% if categories %}
+<div class="category-strip">
+  <div class="container">
+    <a href="{{ url_for('main.home') }}" class="{{ 'active' if not request.args.get('category') else '' }}">All</a>
+    {% for cat in categories %}
+      <a href="{{ url_for('main.home', category=cat) }}" class="{{ 'active' if request.args.get('category') == cat else '' }}">{{ cat }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<main>
+  <div class="container" style="padding-top:22px;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% if has_pending_invite %}
+      <div class="flash flash-info">
+        You have a pending admin invitation. <a href="{{ url_for('auth.accept_invite') }}">Review it</a>.
+      </div>
+    {% endif %}
+  </div>
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <div class="container">
+    <div class="col">
+      <h4>CampusKit</h4>
+      <p style="color:#9fb4c4;">Scientific calculators, drafters, instrument boxes and electronic gadgets — sourced by students, for students.</p>
+    </div>
+    <div class="col">
+      <h4>Shop</h4>
+      <p><a href="{{ url_for('main.home') }}">All products</a></p>
+      <p><a href="{{ url_for('main.returns_policy') }}">Returns policy</a></p>
+    </div>
+    <div class="col">
+      <h4>Support</h4>
+      <p><a href="{{ url_for('main.contact') }}">Contact us</a></p>
+      <p><a href="{{ url_for('shop.order_history') }}">Track an order</a></p>
+    </div>
+    <div class="col">
+      <h4>For colleges</h4>
+      <p style="color:#9fb4c4;">Want to sell CampusKit products at your college? Ask your CampusKit contact to invite you as a store admin.</p>
+    </div>
+  </div>
+  <div class="container fine">&copy; {{ 2026 }} CampusKit. Built by students, for students.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}My orders — CampusKit{% endblock %}
+{% block content %}
+<div class="container section">
+  <h2>My orders</h2>
+  {% if orders %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Order</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr></thead>
+      <tbody>
+      {% for o in orders %}
+        <tr>
+          <td>#{{ o.id }}</td>
+          <td>{{ o.created_at.strftime('%d %b %Y') }}</td>
+          <td><span class="pill pill-{{ o.status }}">{{ o.status }}</span></td>
+          <td>₹{{ '%.2f'|format(o.total_amount) }}</td>
+          <td><a href="{{ url_for('shop.order_detail', order_id=o.id) }}">View</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>No orders yet</h3>
+    <a href="{{ url_for('main.home') }}" class="btn btn-amber">Start shopping</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

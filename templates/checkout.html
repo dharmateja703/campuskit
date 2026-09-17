@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Checkout — CampusKit{% endblock %}
+{% block content %}
+<div class="container section">
+  <h2>Checkout</h2>
+  <div class="two-col">
+    <div class="form-panel wide" style="margin:0;">
+      <h3>Delivery address</h3>
+      <form method="post">
+        <div class="field">
+          <label>Full delivery address</label>
+          <textarea name="address" placeholder="Hostel / room no., college name, city, PIN code" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-amber btn-block">Place order</button>
+      </form>
+    </div>
+    <div>
+      <h3>Order summary</h3>
+      {% for product, qty in items %}
+        <div class="cart-row" style="border:none; padding:8px 0;">
+          <span class="grow">{{ product.name }} × {{ qty }}</span>
+          <strong>₹{{ '%.2f'|format(product.price * qty) }}</strong>
+        </div>
+      {% endfor %}
+      <div class="cart-summary" style="margin-left:0; max-width:none;">
+        <div class="total-row"><span>Total</span><span>₹{{ '%.2f'|format(total) }}</span></div>
+        <p class="muted">Payment on pickup / delivery. You can request a return within 3 days of delivery.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

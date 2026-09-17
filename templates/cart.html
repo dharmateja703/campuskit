@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Your cart — CampusKit{% endblock %}
+{% block content %}
+<div class="container section">
+  <h2>Your cart</h2>
+
+  {% if items %}
+    {% for item in items %}
+    <div class="cart-row">
+      {% if item.product.primary_image %}
+        <img src="{{ url_for('static', filename='uploads/products/' ~ item.product.primary_image) }}" alt="{{ item.product.name }}">
+      {% endif %}
+      <div class="grow">
+        <strong>{{ item.product.name }}</strong>
+        <div class="muted">₹{{ '%.2f'|format(item.product.price) }} each</div>
+      </div>
+      <form action="{{ url_for('shop.update_cart', product_id=item.product.id) }}" method="post" style="display:flex; gap:8px; align-items:center;">
+        <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="{{ item.product.stock }}">
+        <button type="submit" class="btn btn-outline btn-sm">Update</button>
+      </form>
+      <strong style="width:90px; text-align:right;">₹{{ '%.2f'|format(item.line_total) }}</strong>
+      <form action="{{ url_for('shop.remove_from_cart', product_id=item.product.id) }}" method="post">
+        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+      </form>
+    </div>
+    {% endfor %}
+
+    <div class="cart-summary">
+      <div class="total-row"><span>Total</span><span>₹{{ '%.2f'|format(total) }}</span></div>
+      <a href="{{ url_for('shop.checkout') }}" class="btn btn-amber btn-block">Checkout</a>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h3>Your cart is empty</h3>
+      <p>Browse the catalog and add something to your kit.</p>
+      <a href="{{ url_for('main.home') }}" class="btn btn-amber">Start shopping</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "admin/_layout.html" %}
+{% block title %}Add product — CampusKit{% endblock %}
+{% block admin_content %}
+<h2>Add a product</h2>
+<div class="form-panel wide" style="margin:0;">
+  <form method="post" enctype="multipart/form-data">
+    <div class="field">
+      <label>Product name</label>
+      <input type="text" name="name" value="{{ form.get('name','') }}" required>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Category</label>
+        <select name="category" required>
+          <option value="">Select a category</option>
+          {% for cat in categories %}
+            <option value="{{ cat }}" {% if form.get('category') == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Brand (optional)</label>
+        <input type="text" name="brand" value="{{ form.get('brand','') }}">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Price (₹)</label>
+        <input type="number" step="0.01" min="0" name="price" value="{{ form.get('price','') }}" required>
+      </div>
+      <div class="field">
+        <label>Stock quantity</label>
+        <input type="number" min="0" name="stock" value="{{ form.get('stock', 0) }}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <textarea name="description">{{ form.get('description','') }}</textarea>
+    </div>
+    <div class="field">
+      <label>Product images</label>
+      <input type="file" name="images" accept="image/*" multiple required>
+      <div class="hint">You can select one or more images (JPG, PNG, WEBP, GIF).</div>
+    </div>
+    <button type="submit" class="btn btn-amber">Add product</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Admin invitation — CampusKit{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="form-panel">
+    <h2>Admin invitation</h2>
+    {% if invite %}
+      <p>You've been invited by <strong>{{ invite.invited_by.name }}</strong> to help manage products on CampusKit.</p>
+      {% if invite.note %}<p class="muted">Note from {{ invite.invited_by.name }}: "{{ invite.note }}"</p>{% endif %}
+      <form method="post" style="display:flex; gap:10px;">
+        <button type="submit" name="action" value="accept" class="btn btn-amber">Accept & become admin</button>
+        <button type="submit" name="action" value="decline" class="btn btn-outline">Decline</button>
+      </form>
+    {% else %}
+      <p>You don't have any pending admin invitations right now.</p>
+      <a href="{{ url_for('main.home') }}" class="btn btn-outline">Back to shop</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

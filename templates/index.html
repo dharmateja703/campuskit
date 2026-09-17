@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}CampusKit — Engineering & Exam Essentials{% endblock %}
+{% block content %}
+
+{% if not query and not active_category %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-text">
+      <span class="hero-eyebrow-line"></span>
+      <h1>Everything on your practical kit list, in one place.</h1>
+      <p class="lede">Scientific calculators, drafters, instrument boxes and lab gadgets — stocked and shipped by students who've sat the same exams.</p>
+      <a class="btn btn-amber" href="#catalog">Browse the catalog</a>
+    </div>
+    <div class="hero-figure">
+      <div class="hero-figure-row">
+        <div>
+          <div class="num">3-day</div>
+          <div class="cap">return window</div>
+        </div>
+        <div>
+          <div class="num">{{ products|length }}+</div>
+          <div class="cap">items in stock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<div class="container section" id="catalog">
+  <div class="section-head">
+    <h2>
+      {% if query %}Results for "{{ query }}"{% elif active_category %}{{ active_category }}{% else %}Full catalog{% endif %}
+    </h2>
+    <span class="count">{{ products|length }} item{{ 's' if products|length != 1 else '' }}</span>
+  </div>
+
+  {% if products %}
+  <div class="grid">
+    {% for p in products %}
+    <div class="spec-card">
+      <a href="{{ url_for('main.product_detail', product_id=p.id) }}" class="thumb">
+        {% if p.primary_image %}
+          <img src="{{ url_for('static', filename='uploads/products/' ~ p.primary_image) }}" alt="{{ p.name }}">
+        {% else %}
+          <span class="no-image">No image yet</span>
+        {% endif %}
+      </a>
+      <span class="tag">{{ p.category }}</span>
+      <h3><a href="{{ url_for('main.product_detail', product_id=p.id) }}">{{ p.name }}</a></h3>
+      <div class="spec-row">
+        <span class="price">₹{{ '%.2f'|format(p.price) }}</span>
+        {% if p.in_stock %}<span class="stock-ok">In stock</span>{% else %}<span class="stock-out">Out of stock</span>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>No products match yet</h3>
+    <p>Try a different search term, or check back soon — admins are adding new stock regularly.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
