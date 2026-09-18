@@ -10,13 +10,6 @@
 </head>
 <body>
 
-<div class="topbar">
-  <div class="container">
-    <span>Free campus pickup on all orders &middot; Returns accepted within 3 days</span>
-    <span><a href="{{ url_for('main.contact') }}">Need help? Contact us</a></span>
-  </div>
-</div>
-
 <header class="navbar">
   <div class="container">
     <a class="brand" href="{{ url_for('main.home') }}"><span class="brand-mark">&#9633;</span> CampusKit</a>
@@ -46,6 +39,16 @@
     </nav>
   </div>
 </header>
+
+<div class="promo-bar">
+  <div class="container">
+    <span class="promo-item"><span class="promo-icon">&#9673;</span> Free campus pickup on all orders</span>
+    <span class="promo-divider"></span>
+    <span class="promo-item"><span class="promo-icon">&#8635;</span> Returns accepted within 3 days</span>
+    <span class="promo-divider"></span>
+    <a class="promo-contact" href="{{ url_for('main.contact') }}">Need help? Contact us</a>
+  </div>
+</div>
 
 {% if categories %}
 <div class="category-strip">
