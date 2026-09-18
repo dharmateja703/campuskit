@@ -46,9 +46,9 @@ img { max-width: 100%; display: block; }
 
 /* ===== Promo banner ===== */
 .promo-bar {
-  background: linear-gradient(90deg, var(--blue-light), #f6efe0 65%, var(--blue-light));
-  border-bottom: 1px solid var(--line-soft);
-  padding: 10px 0;
+  background: var(--navy-2);
+  border-top: 3px solid var(--amber);
+  padding: 14px 0;
 }
 .promo-bar .container {
   display: flex;
@@ -57,23 +57,23 @@ img { max-width: 100%; display: block; }
   gap: 28px;
   flex-wrap: wrap;
   font-size: 0.85rem;
-  color: var(--navy);
+  color: #dbe6ee;
   text-align: center;
 }
 .promo-bar .promo-item { display: flex; align-items: center; gap: 7px; font-weight: 500; }
 .promo-bar .promo-icon { color: var(--amber); font-size: 0.95rem; }
-.promo-bar .promo-divider { width: 1px; height: 14px; background: var(--line); }
+.promo-bar .promo-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.2); }
 .promo-bar a.promo-contact {
   padding: 5px 14px;
   border-radius: var(--radius-pill);
-  background: var(--navy);
+  background: var(--amber);
   color: #fff;
   font-weight: 600;
   transition: box-shadow 0.15s ease, background 0.15s ease;
 }
 .promo-bar a.promo-contact:hover {
-  background: var(--blue);
-  box-shadow: var(--glow);
+  background: #c17d24;
+  box-shadow: var(--glow-amber);
   text-decoration: none;
 }
 
